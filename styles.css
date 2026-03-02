@@ -1,0 +1,130 @@
+*{
+    font-family: Arial;
+    scrollbar-width: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    overflow-x: hidden;
+}
+body {
+    background-color: rgb(236, 236, 236);
+    display: flex;
+    flex-direction: column;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+}
+header {
+    background-color: rgb(15, 0, 101);
+    display: flex;
+    min-height: 100px;
+    width: 100%;
+    margin: 0;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+}
+header a {
+    color: white;
+    text-decoration: none;
+}
+#logo-title {
+    display: flex;
+}
+#title{
+    display: flex;
+    align-items: center;
+}
+#logo-title img {
+    margin: 0 10px 0 20px;
+}
+header img {
+    width: 50px;
+    height: 50px;
+    margin: 0 10px 0 10px;
+}
+#nav-links {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+#nav-links li{
+    align-items: center;
+    margin: 1px 50px 1px 1px;
+    padding: 0;
+}
+#login {
+    margin: 0 20px 0 0px;
+}
+
+/********************************************************************************/
+
+main {
+    background-color: rgb(236, 236, 236);
+    justify-content: center;
+    flex: 1; /* Esto hace que el contenido principal crezca y empuje al footer */
+}
+#add-task {
+    background-color: rgb(15, 0, 101);
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    border-radius: 50%;
+    border: none;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    cursor: pointer;
+    position: fixed;
+    right: 30px;
+    top: 120px
+}
+#add-task:hover {
+    background-color: rgb(10, 0, 70);
+}
+#add-task:active {
+    background-color: rgb(5, 0, 35);
+    font-size: 40px;
+}
+#tasks-list {
+    color: rgb(0, 0, 0);
+    margin-top: 150px;
+    justify-content: center;
+    display: flex;
+}
+table {
+    border: 10px solid rgb(236, 236, 236);
+    border-radius: 20px;
+    border-collapse: collapse;
+}
+table th, td, tr{
+    border: 8px solid rgb(236, 236, 236);
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+}
+table tbody td{
+    border: 2px solid rgb(236, 236, 236);
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+}
+/********************************************************************************/
+
+footer {
+    background-color: rgb(236, 236, 236);
+    color: rgb(0, 0, 0, 0.5);
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
