@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-clipboard2-check-fill"></i> Checklist
+            </a>
+            <button id="trash" class="btn btn-outline-light btn-sm">
+                Trash <i class="bi bi-trash"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container mt-5" > 
+        
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <input type="text" id="inputTask" class="form-control" placeholder="Task name">
+            </div>
+            <div class="col-md-4">
+                <input type="date" id="inputDate" class="form-control">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-10" onclick="addTask()">Add</button>
+            </div>
+        </div>
+
+        <div class="table-responsive rounded-3 border shadow-sm overflow-hidden">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th> <i class="bi bi-bell-fill"></i> Task</th>
+                        <th style="width: 130px;"><i class="bi bi-calendar-fill"></i> Deadline</th>
+                        <th class="text-center" style="width: 120px;"></th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="taskTable">
+                    <tr>
+                        <td>
+                            Hacer tarea de Matemáticas
+                        </td>
+                        <td>
+                            10/10/2026
+                        </td>
+                        <td>
+                            <button id="delete" class="btn btn-outline-success btn-sm border-0" @onclick="() => BorrarTarea(id)">
+                                <i class="bi bi-check-square"></i>
+                            </button>
+                            <button id="modify" class="btn btn-outline-primary btn-sm border-0" @onclick="() => BorrarTarea(id)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button id="delete" class="btn btn-outline-danger btn-sm border-0" @onclick="() => BorrarTarea(id)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer class="bg-light text-center text-muted py-4 mt-5 border-top" style="position: fixed; bottom: 0; width: 100%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <a href="#" class="text-muted me-3"><i class="bi bi-github"></i></a>
+                        <a href="#" class="text-muted me-3"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-muted"><i class="bi bi-envelope"></i></a>
+                    </div>
+                    <div class="text-secondary small">
+                        &copy; 2026 - Maggie Berver. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+</footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
