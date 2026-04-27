@@ -1,9 +1,10 @@
 class Task {
     constructor(name, date) {
-        this.id = crypto.randomUUID();;
+        this.id = crypto.randomUUID();
         this.next = null;
         this.name = name;
         this.date = date;
+        this.completed = false;
     }
 }
 
@@ -11,8 +12,13 @@ class List {
     constructor() {
         this.firstTask = null;
         this.lastTask = null;
-        this.table = document.getElementById("taskTable");
+        this.table = null; // se inicializa cuando el DOM esté listo
         this.editingId = null;
+        this.loaded = false; // indica si ya cargó desde localStorage
+    }
+    ensureTable() {
+        if (!this.table) this.table = document.getElementById("taskTable");
+        return this.table;
     }
     findById(id) {
         let current = this.firstTask;
@@ -30,8 +36,14 @@ class List {
             this.lastTask.next = task;
             this.lastTask = task;
         }
+        this._renderRow(task);
+        this.saveToLocalStorage();
+    }
+    _renderRow(task) {
+        if (!this.ensureTable()) return;
         const row = document.createElement("tr");
-        row.setAttribute("id", task.id); 
+        row.setAttribute("id", task.id);
+        if (task.completed) row.classList.add('completed');
         row.innerHTML = `
             <td>${task.name}</td>
             <td>${task.date}</td>
@@ -47,6 +59,60 @@ class List {
                 </button>
             </td>`;
         this.table.appendChild(row);
+    }
+    render() {
+        if (!this.ensureTable()) return;
+        this.table.innerHTML = '';
+        let current = this.firstTask;
+        while (current) {
+            this._renderRow(current);
+            current = current.next;
+        }
+    }
+    toArray() {
+        const arr = [];
+        let current = this.firstTask;
+        while (current) {
+            arr.push({ id: current.id, name: current.name, date: current.date, completed: !!current.completed });
+            current = current.next;
+        }
+        return arr;
+    }
+    saveToLocalStorage() {
+        try {
+            const arr = this.toArray();
+            localStorage.setItem('tasks', JSON.stringify(arr));
+        } catch (e) {
+            console.error('Error saving tasks to localStorage', e);
+        }
+    }
+    loadFromLocalStorage() {
+        try {
+            // mark as attempted so subsequent operations don't overwrite unintentionally
+            this.loaded = true;
+            const raw = localStorage.getItem('tasks');
+            if (!raw) return;
+            const arr = JSON.parse(raw);
+            this.firstTask = null;
+            this.lastTask = null;
+            for (const item of arr) {
+                const t = new Task(item.name, item.date);
+                t.id = item.id;
+                t.completed = !!item.completed;
+                t.next = null;
+                if (this.firstTask === null) {
+                    this.firstTask = t;
+                    this.lastTask = t;
+                } else {
+                    this.lastTask.next = t;
+                    this.lastTask = t;
+                }
+            }
+            this.render();
+            this.loaded = true;
+        } catch (e) {
+            console.error('Error loading tasks from localStorage', e);
+        }
     }
     delete(taskid) {
         const task = this.findById(taskid);
@@ -66,6 +132,7 @@ class List {
         }
         const row = document.getElementById(taskid);
         if (row) row.remove();
+        this.saveToLocalStorage();
     }
     modify(taskid) {
         const task = this.findById(taskid);
@@ -79,16 +146,23 @@ class List {
         if (typeof updateActionButtons === 'function') updateActionButtons(true);
     }
     cross(taskid) {
-    const fila = document.getElementById(taskid);
+    const task = this.findById(taskid);
+        if (!task) return;
+        task.completed = !task.completed;
+        const fila = document.getElementById(taskid);
         if (fila) {
             fila.classList.toggle("completed");
         }
+        this.saveToLocalStorage();
     }  
 }
 
 const list = new List();
 
 function addTask() {
+    // ensure existing tasks are loaded before adding new one
+    if (!list.loaded) list.loadFromLocalStorage();
+
     const inputTareaEl = document.getElementById("inputTask");
     const inputFechaEl = document.getElementById("inputDate");
     const inputTarea = inputTareaEl ? inputTareaEl.value.trim() : "";
@@ -168,8 +242,13 @@ function cancelEdit() {
 }
 
 // Initialize buttons state on load
+// Initialize buttons state on load and load saved tasks once the DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => updateActionButtons(false));
+    document.addEventListener('DOMContentLoaded', () => {
+        list.loadFromLocalStorage();
+        updateActionButtons(false);
+    });
 } else {
+    list.loadFromLocalStorage();
     updateActionButtons(false);
 }
