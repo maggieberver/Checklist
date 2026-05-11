@@ -226,6 +226,8 @@ function saveEdit() {
         if (cells[0]) cells[0].innerText = task.name;
         if (cells[1]) cells[1].innerText = task.date;
     }
+    // save changes to localStorage so edits persist
+    list.saveToLocalStorage();
     list.editingId = null;
     if (inputTarea) inputTarea.value = "";
     if (inputFecha) inputFecha.value = "";
